@@ -13,10 +13,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 
 @Configuration
-@Profile("!prod")
-public class ProjectSecurityConfig {
-
-    @Bean
+@Profile("prod")
+public class ProjectSecurityProdConfig {
+	
+	@Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrfConfig -> csrfConfig.disable())
                 .authorizeHttpRequests((requests) -> requests
@@ -26,18 +26,13 @@ public class ProjectSecurityConfig {
         http.httpBasic(withDefaults());
         return http.build();
     }
-
-    /*@Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
-    }*/
-
-    @Bean
+	
+	@Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
-    /**
+	
+	/**
      * From Spring Security 6.3 version
      * @return
      */

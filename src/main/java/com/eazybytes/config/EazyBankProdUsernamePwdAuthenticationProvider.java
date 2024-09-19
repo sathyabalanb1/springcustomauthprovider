@@ -13,10 +13,11 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Component
-@Profile("!prod")
+@Profile("prod")
 @RequiredArgsConstructor
-public class EazyBankUsernamePwdAuthenticationProvider implements AuthenticationProvider {
+public class EazyBankProdUsernamePwdAuthenticationProvider implements AuthenticationProvider {
 	
 	private final UserDetailsService userDetailsService;
 	private final PasswordEncoder passwordEncoder;
@@ -30,14 +31,13 @@ public class EazyBankUsernamePwdAuthenticationProvider implements Authentication
 		
 		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 		
-	//	if(passwordEncoder.matches(pwd, userDetails.getPassword())) {
+		if(passwordEncoder.matches(pwd, userDetails.getPassword())) {
 			
 			return new UsernamePasswordAuthenticationToken(username,pwd,userDetails.getAuthorities());
-/*		}else {
+		}else {
 			
 			throw new BadCredentialsException("Invalid Password");
 		}
-*/
 		
 	}
 
@@ -48,5 +48,6 @@ public class EazyBankUsernamePwdAuthenticationProvider implements Authentication
 		return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
 		
 	}
+
 
 }
